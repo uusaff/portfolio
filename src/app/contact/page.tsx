@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -13,8 +13,11 @@ import { cn } from '@/lib/utils'
 import { Mail, Phone, MapPin, Calendar, Clock, CheckCircle, XCircle, Loader2, Send, Globe, ArrowRight, ChevronDown } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { author, socialLinks, faqs } from '@/data'
+import { staggerContainer, fadeSlideUp, fadeSlideLeft, fadeSlideRight, fadeIn, scaleIn, springSoft, easeOutSmooth, cardHover } from '@/lib/animations'
 
 export default function ContactPage() {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -43,7 +46,14 @@ export default function ContactPage() {
 
     setStatus('submitting')
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (!res.ok) throw new Error('Failed to send')
+
       setStatus('success')
       setFormData({ name: '', email: '', subject: '', message: '', company: '' })
     } catch {
@@ -97,7 +107,8 @@ export default function ContactPage() {
           <motion.div
             className="max-w-3xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={motionSafe ? { opacity: 1, y: 0 } : {}}
+            transition={springSoft}
           >
             <Badge variant="default" className="mb-4">
               Get in Touch
@@ -114,9 +125,10 @@ export default function ContactPage() {
           <div className="grid gap-8 lg:grid-cols-3">
             <motion.div
               className="lg:col-span-1"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
+              variants={fadeSlideLeft}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
             >
               <Card className="h-full p-6">
                 <h2 className="text-heading-lg font-semibold mb-6">Contact Information</h2>
@@ -143,9 +155,15 @@ export default function ContactPage() {
                 <Separator className="my-6" />
 
                 <h3 className="text-heading-md font-semibold mb-4">Connect Elsewhere</h3>
-                <div className="flex flex-wrap gap-3">
+                <motion.div
+                  className="flex flex-wrap gap-3"
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true }}
+                >
                   {socialLinks.map((social) => (
-                    <a
+                    <motion.a
                       key={social.platform}
                       href={social.url}
                       target="_blank"
@@ -154,21 +172,25 @@ export default function ContactPage() {
                         'flex items-center gap-2 px-4 py-2 rounded-xl border border-border text-body-sm font-medium',
                         'text-muted-foreground hover:text-primary hover:border-primary/50 transition-all duration-200'
                       )}
+                      variants={scaleIn}
+                      whileHover={motionSafe ? { scale: 1.05, y: -2 } : {}}
+                      whileTap={motionSafe ? { scale: 0.95 } : {}}
                       aria-label={social.label}
                     >
                       <social.icon className="h-5 w-5" />
                       <span>{social.platform}</span>
-                    </a>
+                    </motion.a>
                   ))}
-                </div>
+                </motion.div>
               </Card>
             </motion.div>
 
             <motion.div
               className="lg:col-span-2"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
+              variants={fadeSlideRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
             >
               <Card className="p-6 md:p-8">
                 <h2 className="text-heading-lg font-semibold mb-6">Send a Message</h2>
@@ -176,7 +198,8 @@ export default function ContactPage() {
                 {status === 'success' && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    animate={motionSafe ? { opacity: 1, scale: 1 } : {}}
+                    transition={springSoft}
                     className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-success/10 border border-success/20 text-success"
                   >
                     <CheckCircle className="h-6 w-6 flex-shrink-0" />
@@ -190,7 +213,8 @@ export default function ContactPage() {
                 {status === 'error' && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    animate={motionSafe ? { opacity: 1, scale: 1 } : {}}
+                    transition={springSoft}
                     className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-destructive/10 border border-destructive/20 text-destructive"
                   >
                     <XCircle className="h-6 w-6 flex-shrink-0" />
@@ -201,8 +225,16 @@ export default function ContactPage() {
                   </motion.div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
-                  <div className="grid gap-6 md:grid-cols-2">
+                <motion.form
+                  onSubmit={handleSubmit}
+                  className="space-y-6"
+                  noValidate
+                  variants={staggerContainer}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: '-80px' }}
+                >
+                  <motion.div variants={fadeSlideUp} className="grid gap-6 md:grid-cols-2">
                     <div>
                       <Label htmlFor="name">Full Name *</Label>
                       <Input
@@ -242,9 +274,9 @@ export default function ContactPage() {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div variants={fadeSlideUp}>
                     <Label htmlFor="company">Company (Optional)</Label>
                     <Input
                       id="company"
@@ -254,9 +286,9 @@ export default function ContactPage() {
                       placeholder="Company name (optional)"
                       disabled={status === 'submitting'}
                     />
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div variants={fadeSlideUp}>
                     <Label htmlFor="subject">Subject *</Label>
                     <Input
                       id="subject"
@@ -274,9 +306,9 @@ export default function ContactPage() {
                         {errors.subject}
                       </p>
                     )}
-                  </div>
+                  </motion.div>
 
-                  <div>
+                  <motion.div variants={fadeSlideUp}>
                     <Label htmlFor="message">Message *</Label>
                     <Textarea
                       id="message"
@@ -299,22 +331,24 @@ export default function ContactPage() {
                         Minimum 20 characters. Be specific about what you're looking for.
                       </p>
                     )}
-                  </div>
+                  </motion.div>
 
-                  <Button type="submit" size="lg" className="w-full md:w-auto" disabled={status === 'submitting'}>
-                    {status === 'submitting' ? (
-                      <>
-                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        Send Message
-                        <Send className="ml-2 h-5 w-5" />
-                      </>
-                    )}
-                  </Button>
-                </form>
+                  <motion.div variants={fadeSlideUp}>
+                    <Button type="submit" size="lg" className="w-full md:w-auto" disabled={status === 'submitting'}>
+                      {status === 'submitting' ? (
+                        <>
+                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <Send className="ml-2 h-5 w-5" />
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
+                </motion.form>
               </Card>
             </motion.div>
           </div>
@@ -326,8 +360,9 @@ export default function ContactPage() {
           <motion.div
             className="max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <div className="text-center mb-12">
               <Badge variant="secondary" className="mb-4">
@@ -338,13 +373,17 @@ export default function ContactPage() {
               </h2>
             </div>
 
-            <div className="space-y-4">
+            <motion.div
+              className="space-y-4"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
               {faqs.map((faq) => (
                 <motion.article
                   key={faq.question}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
+                  variants={fadeSlideUp}
                 >
                   <details className="group">
                     <summary className="flex items-center justify-between p-6 cursor-pointer list-none rounded-2xl glass-card transition-all duration-200 hover:shadow-[0_1px_2px_hsl(var(--color-foreground)/0.04),0_8px_24px_hsl(var(--color-foreground)/0.08)] hover:border-border/80">
@@ -360,7 +399,7 @@ export default function ContactPage() {
                   </details>
                 </motion.article>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -369,9 +408,10 @@ export default function ContactPage() {
         <div className="container-custom">
           <motion.div
             className="relative glass-card rounded-3xl p-10 md:p-16 text-center overflow-hidden max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <div className="absolute inset-0 opacity-[0.03]" style={{ background: 'var(--color-bg-mesh)' }} aria-hidden="true" />
             <div className="relative z-10">

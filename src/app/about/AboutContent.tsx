@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -11,19 +11,12 @@ import { cn } from '@/lib/utils'
 import { Download, Award, GraduationCap, Star, BookOpen, ExternalLink, CheckCircle, ChevronDown, ArrowRight } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaGlobe } from 'react-icons/fa'
 import { stats, experiences, education, certifications, achievements, coreValues, personalInterests, author, socialLinks } from '@/data'
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
-}
+import { staggerContainer, fadeSlideUp, fadeIn, scaleIn, springSoft, easeOutSmooth } from '@/lib/animations'
 
 export function AboutPageContent() {
+  const prefersReducedMotion = useReducedMotion()
   const [expandedExp, setExpandedExp] = useState<string | null>(null)
+  const motionSafe = !prefersReducedMotion
 
   const categoryIcons = {
     language: BookOpen,
@@ -69,8 +62,8 @@ export function AboutPageContent() {
           <motion.div
             className="max-w-4xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            animate={motionSafe ? { opacity: 1, y: 0 } : {}}
+            transition={springSoft}
           >
             <Badge variant="default" className="mb-4">
               About Me
@@ -87,13 +80,13 @@ export function AboutPageContent() {
 
           <motion.div
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
-            animate="visible"
-            viewport={{ once: true }}
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
           >
             {stats.map((stat) => (
-              <motion.div key={stat.label} variants={itemVariants} className="text-center">
+              <motion.div key={stat.label} variants={fadeSlideUp} className="text-center">
                 <div className="text-display-md font-bold gradient-text mb-2">
                   {stat.prefix || ''}{stat.value}{stat.suffix || ''}
                 </div>
@@ -109,8 +102,9 @@ export function AboutPageContent() {
           <motion.div
             className="max-w-4xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <Badge variant="secondary" className="mb-4">
               Professional Journey
@@ -124,13 +118,13 @@ export function AboutPageContent() {
             <div className="absolute left-[1.125rem] top-0 bottom-0 w-px bg-gradient-to-b from-primary to-accent" aria-hidden="true" />
             <motion.div
               className="space-y-12"
-              variants={containerVariants}
+              variants={staggerContainer}
               initial="hidden"
-              animate="visible"
+              whileInView="visible"
               viewport={{ once: true, margin: '-100px' }}
             >
               {experiences.map((exp) => (
-                <motion.article key={exp.id} variants={itemVariants} className="relative pl-12">
+                <motion.article key={exp.id} variants={fadeSlideUp} className="relative pl-12">
                   <div className="absolute left-[1.125rem] top-1 -translate-x-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-background border-2 border-primary z-10" aria-hidden="true">
                     <div className="h-1.5 w-1.5 rounded-full bg-primary" />
                   </div>
@@ -222,8 +216,9 @@ export function AboutPageContent() {
           <motion.div
             className="max-w-4xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <Badge variant="secondary" className="mb-4">
               Core Values
@@ -235,13 +230,13 @@ export function AboutPageContent() {
 
           <motion.div
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
           >
             {coreValues.map((value) => (
-              <motion.article key={value.title} variants={itemVariants}>
+              <motion.article key={value.title} variants={fadeSlideUp}>
                 <Card className="h-full">
                   <CardContent className="pt-6">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mb-4">
@@ -262,8 +257,9 @@ export function AboutPageContent() {
           <motion.div
             className="max-w-4xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <Badge variant="secondary" className="mb-4">
               Education & Certifications
@@ -275,13 +271,13 @@ export function AboutPageContent() {
 
           <motion.div
             className="grid gap-6 md:grid-cols-2"
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
           >
             {education.map((edu) => (
-              <motion.article key={edu.id} variants={itemVariants}>
+              <motion.article key={edu.id} variants={fadeSlideUp}>
                 <Card className="h-full p-6">
                   <div className="flex items-start gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
@@ -308,7 +304,7 @@ export function AboutPageContent() {
               </motion.article>
             ))}
             {certifications.map((cert) => (
-              <motion.article key={cert.id} variants={itemVariants}>
+              <motion.article key={cert.id} variants={fadeSlideUp}>
                 <Card className="h-full p-6">
                   <div className="flex items-start gap-4">
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
@@ -345,8 +341,9 @@ export function AboutPageContent() {
           <motion.div
             className="max-w-4xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <Badge variant="secondary" className="mb-4">
               Recognition
@@ -358,13 +355,13 @@ export function AboutPageContent() {
 
           <motion.div
             className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
           >
             {achievements.map((achievement) => (
-              <motion.article key={achievement.id} variants={itemVariants}>
+              <motion.article key={achievement.id} variants={fadeSlideUp}>
                 <Card className="h-full p-6">
                   <div className="flex items-start gap-4">
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning/10 text-warning shrink-0">
@@ -388,8 +385,9 @@ export function AboutPageContent() {
           <motion.div
             className="max-w-4xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <Badge variant="secondary" className="mb-4">
               Personal
@@ -401,13 +399,13 @@ export function AboutPageContent() {
 
           <motion.div
             className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-            variants={containerVariants}
+            variants={staggerContainer}
             initial="hidden"
-            animate="visible"
+            whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
           >
             {personalInterests.map((interest) => (
-              <motion.article key={interest.label} variants={itemVariants}>
+              <motion.article key={interest.label} variants={fadeSlideUp}>
                 <Card>
                   <CardContent className="pt-6">
                     <h3 className="text-heading-md font-semibold mb-1">{interest.label}</h3>
@@ -424,9 +422,10 @@ export function AboutPageContent() {
         <div className="container-custom">
           <motion.div
             className="relative glass-card rounded-3xl p-10 md:p-16 text-center overflow-hidden"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <div className="absolute inset-0 opacity-[0.03]" style={{ background: 'var(--color-bg-mesh)' }} aria-hidden="true" />
             <div className="relative z-10 max-w-2xl mx-auto">
@@ -451,20 +450,28 @@ export function AboutPageContent() {
                   </a>
                 </Button>
               </div>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-6">
+              <motion.div
+                className="mt-8 flex flex-wrap items-center justify-center gap-6"
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
                 {socialLinks.map((social) => (
-                  <a
+                  <motion.a
                     key={social.platform}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-body-sm text-muted-foreground hover:text-primary transition-colors"
+                    variants={fadeSlideUp}
+                    whileHover={motionSafe ? { y: -2 } : {}}
                   >
                     <social.icon className="h-4 w-4" />
                     <span>{social.platform}</span>
-                  </a>
+                  </motion.a>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

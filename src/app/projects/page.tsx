@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils'
 import { Search, Filter, ExternalLink, ChevronDown, X, Star, Zap, Code2, Server, Smartphone, Database, Globe } from 'lucide-react'
 import { FaGithub } from 'react-icons/fa'
 import { projects, type ProjectCategory } from '@/data'
+import { staggerContainer, staggerContainerFast, fadeSlideUp, fadeIn, scaleIn, springConfig, springSoft, easeOutSmooth, cardHover } from '@/lib/animations'
 
 const categoryIcons: Record<ProjectCategory, React.ComponentType<{ className?: string }>> = {
   'full-stack': Code2,
@@ -35,6 +36,8 @@ const categoryLabels: Record<ProjectCategory, string> = {
 }
 
 export default function ProjectsPage() {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | 'all'>('all')
   const [sortBy, setSortBy] = useState<'featured' | 'recent' | 'alphabetical'>('featured')
@@ -69,16 +72,6 @@ export default function ProjectsPage() {
 
   const categories: (ProjectCategory | 'all')[] = ['all', 'full-stack', 'frontend', 'backend', 'mobile', 'devops', 'ai-ml', 'open-source', 'other']
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.05 } },
-  }
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-  }
-
   return (
     <>
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-24" aria-labelledby="projects-heading">
@@ -86,7 +79,8 @@ export default function ProjectsPage() {
           <motion.div
             className="max-w-3xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={motionSafe ? { opacity: 1, y: 0 } : {}}
+            transition={springSoft}
           >
             <Badge variant="default" className="mb-4">
               Portfolio
@@ -102,11 +96,12 @@ export default function ProjectsPage() {
 
           <motion.div
             className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
+            variants={staggerContainerFast}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
           >
-            <div className="relative flex-1 max-w-md">
+            <motion.div variants={fadeIn} className="relative flex-1 max-w-md">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
               <Input
                 type="search"
@@ -116,9 +111,9 @@ export default function ProjectsPage() {
                 className="pl-12"
                 aria-label="Search projects"
               />
-            </div>
+            </motion.div>
 
-            <div className="flex flex-wrap items-center gap-4">
+            <motion.div variants={fadeIn} className="flex flex-wrap items-center gap-4">
               <div className="relative">
                 <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <select
@@ -135,7 +130,7 @@ export default function ProjectsPage() {
                 </select>
               </div>
 
-              <div className="relative">
+              <motion.div variants={fadeIn} className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as 'featured' | 'recent' | 'alphabetical')}
@@ -147,15 +142,16 @@ export default function ProjectsPage() {
                   <option value="alphabetical">A-Z</option>
                 </select>
                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
 
           {searchQuery && (
             <motion.div
               className="mb-8 flex items-center gap-2 text-body-sm text-muted-foreground"
               initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
+              animate={motionSafe ? { opacity: 1, x: 0 } : {}}
+              transition={springSoft}
             >
               <span>Showing {filteredProjects.length} of {projects.length} projects for &ldquo;{searchQuery}&rdquo;</span>
               <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} aria-label="Clear search">
@@ -168,13 +164,13 @@ export default function ProjectsPage() {
             <motion.div
               key={selectedCategory + searchQuery + sortBy}
               className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-              variants={containerVariants}
+              variants={staggerContainer}
               initial="hidden"
-              animate="visible"
+              animate={motionSafe ? 'visible' : 'hidden'}
               exit="hidden"
             >
               {filteredProjects.map((project) => (
-                <motion.article key={project.id} variants={itemVariants} className="group">
+                <motion.article key={project.id} variants={fadeSlideUp} className="group" whileHover={motionSafe ? cardHover : {}}>
                   <Card className="h-full overflow-hidden p-0">
                     <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
                       <div className="absolute inset-0 flex items-center justify-center p-8">
@@ -223,26 +219,30 @@ export default function ProjectsPage() {
                         </div>
                         <div className="flex items-center gap-2">
                           {project.githubUrl && (
-                            <a
+                            <motion.a
                               href={project.githubUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex h-9 w-9 items-center justify-center rounded-lg border border-border hover:border-primary/50 hover:text-primary transition-colors"
                               aria-label="View on GitHub"
+                              whileHover={motionSafe ? { scale: 1.1 } : {}}
+                              whileTap={motionSafe ? { scale: 0.9 } : {}}
                             >
                               <FaGithub className="h-4 w-4" />
-                            </a>
+                            </motion.a>
                           )}
                           {project.liveUrl && (
-                            <a
+                            <motion.a
                               href={project.liveUrl}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="flex h-9 w-9 items-center justify-center rounded-lg border border-border hover:border-primary/50 hover:text-primary transition-colors"
                               aria-label="Live Demo"
+                              whileHover={motionSafe ? { scale: 1.1 } : {}}
+                              whileTap={motionSafe ? { scale: 0.9 } : {}}
                             >
                               <ExternalLink className="h-4 w-4" />
-                            </a>
+                            </motion.a>
                           )}
                         </div>
                       </div>
@@ -255,7 +255,8 @@ export default function ProjectsPage() {
                 <motion.div
                   className="text-center py-16 col-span-full"
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  animate={motionSafe ? { opacity: 1 } : {}}
+                  transition={easeOutSmooth}
                 >
                   <Search className="h-12 w-12 mx-auto text-muted-foreground/30 mb-4" />
                   <h3 className="text-heading-lg mb-2">No projects found</h3>
@@ -277,8 +278,9 @@ export default function ProjectsPage() {
           <motion.div
             className="text-center max-w-3xl mx-auto mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={springSoft}
           >
             <Badge variant="secondary" className="mb-4">
               Deep Dives
@@ -291,14 +293,18 @@ export default function ProjectsPage() {
             </p>
           </motion.div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <motion.div
+            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+          >
             {projects.filter(p => p.caseStudyUrl).slice(0, 6).map((project) => (
               <motion.article
                 key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4 }}
+                variants={fadeSlideUp}
+                whileHover={motionSafe ? { y: -4 } : {}}
               >
                 <Card className="h-full p-6">
                   <div className="flex items-start gap-4 mb-4">
@@ -334,7 +340,7 @@ export default function ProjectsPage() {
                 </Card>
               </motion.article>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
     </>

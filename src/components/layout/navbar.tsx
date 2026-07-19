@@ -10,8 +10,14 @@ import { navItems, socialLinks } from '@/data'
 import { ThemeToggle } from '@/components/shared/theme-provider'
 import { CustomCursor } from '@/components/shared/custom-cursor'
 import { Menu, X, Sun, Moon, Monitor } from 'lucide-react'
+import { staggerContainer, fadeSlideDown, springConfig, springSoft } from '@/lib/animations'
 
 export function Navbar() {
+  const prefersReducedMotion = React.useMemo(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  }, [])
+  const motionSafe = !prefersReducedMotion
   const pathname = usePathname()
   const [isOpen, setIsOpen] = React.useState(false)
   const [isScrolled, setIsScrolled] = React.useState(false)
@@ -31,7 +37,7 @@ export function Navbar() {
         className={cn(
           'fixed top-0 left-0 right-0 z-sticky transition-all duration-300',
           isScrolled
-            ? 'bg-background/70 backdrop-blur-2xl border-b border-border/40 shadow-[0_1px_2px_hsl(var(--color-foreground)/0.02)]'
+            ? 'bg-background/50 backdrop-blur-2xl border-b border-border/40 shadow-[0_1px_2px_hsl(var(--color-foreground)/0.02)]'
             : 'bg-transparent'
         )}
         role="banner"
@@ -50,24 +56,37 @@ export function Navbar() {
               <span className="hidden sm:block text-heading-sm font-semibold">Yousaf</span>
             </Link>
 
-            <div className="hidden md:flex md:items-center md:gap-1">
+            <motion.div
+              className="hidden md:flex md:items-center md:gap-1"
+              variants={staggerContainer}
+              initial="hidden"
+              animate={motionSafe ? 'visible' : 'hidden'}
+            >
               {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'px-4 py-2 rounded-xl text-body-md font-medium transition-all duration-200',
-                    'hover:bg-accent/10 hover:text-primary',
-                    pathname === item.href
-                      ? 'bg-primary/10 text-primary shadow-sm'
-                      : ''
-                  )}
-                  onClick={handleLinkClick}
-                >
-                  {item.label}
-                </Link>
+                <motion.div key={item.href} variants={fadeSlideDown}>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      'relative px-4 py-2 rounded-xl text-body-md font-medium transition-all duration-200',
+                      'hover:bg-accent/10 hover:text-primary',
+                      pathname === item.href
+                        ? 'bg-primary/10 text-primary shadow-sm'
+                        : ''
+                    )}
+                    onClick={handleLinkClick}
+                  >
+                    {item.label}
+                    <motion.span
+                      className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary rounded-full"
+                      initial={{ scaleX: 0 }}
+                      animate={pathname === item.href ? { scaleX: 1 } : { scaleX: 0 }}
+                      transition={springSoft}
+                      style={{ transformOrigin: 'left' }}
+                    />
+                  </Link>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             <div className="hidden md:flex md:items-center md:gap-3">
               <ThemeToggle />
@@ -103,28 +122,34 @@ export function Navbar() {
                 role="navigation"
                 aria-label="Mobile navigation"
               >
-                <div className="px-4 py-6 space-y-4">
+                <motion.div
+                  className="px-4 py-6 space-y-4"
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate={motionSafe ? 'visible' : 'hidden'}
+                >
                   {navItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        'block px-4 py-3 rounded-xl text-body-lg font-medium transition-all duration-200',
-                        'hover:bg-accent/10 hover:text-primary',
-                        pathname === item.href ? 'bg-primary/10 text-primary' : ''
-                      )}
-                      onClick={handleLinkClick}
-                    >
-                      {item.label}
-                    </Link>
+                    <motion.div key={item.href} variants={fadeSlideDown}>
+                      <Link
+                        href={item.href}
+                        className={cn(
+                          'block px-4 py-3 rounded-xl text-body-lg font-medium transition-all duration-200',
+                          'hover:bg-accent/10 hover:text-primary',
+                          pathname === item.href ? 'bg-primary/10 text-primary' : ''
+                        )}
+                        onClick={handleLinkClick}
+                      >
+                        {item.label}
+                      </Link>
+                    </motion.div>
                   ))}
-                  <div className="pt-4 border-t border-border flex items-center gap-3">
+                  <motion.div variants={fadeSlideDown} className="pt-4 border-t border-border flex items-center gap-3">
                     <ThemeToggle />
                     <Button variant="default" size="lg" className="flex-1" asChild>
                       <Link href="/contact">Get in Touch</Link>
                     </Button>
-                  </div>
-                  <div className="pt-4 flex flex-wrap gap-2">
+                  </motion.div>
+                  <motion.div variants={fadeSlideDown} className="pt-4 flex flex-wrap gap-2">
                     {socialLinks.map((social) => (
                       <a
                         key={social.platform}
@@ -141,8 +166,8 @@ export function Navbar() {
                         <social.icon className="h-5 w-5" />
                       </a>
                     ))}
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>

@@ -126,10 +126,9 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <div className="relative inline-flex items-center gap-1 p-1 bg-secondary rounded-xl">
       <div
-        className="absolute inset-1 rounded-lg bg-primary/20 transition-all duration-300 ease-out"
+        className="absolute inset-y-1 left-1 w-8 rounded-lg bg-primary/20 transition-all duration-300 ease-out"
         style={{
-          transform: theme === 'light' ? 'translateX(0)' : theme === 'dark' ? 'translateX(100%)' : 'translateX(50%)',
-          width: '32px' // Explicit width helps smooth the transform animation
+          transform: theme === 'light' ? 'translateX(0)' : theme === 'dark' ? 'translateX(36px)' : 'translateX(72px)',
         }}
         aria-hidden="true"
       />

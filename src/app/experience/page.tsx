@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils'
 import { ChevronRight, ChevronDown, CheckCircle, Award, Star, Code, Database, Cloud, Globe, Terminal, Layers, Shield, Zap, GraduationCap, Briefcase } from 'lucide-react'
 import { experiences, skills, certifications, education, achievements } from '@/data'
 import type { Skill, Certification, Education, Achievement } from '@/types'
+import { staggerContainer, fadeSlideUp, scaleIn, fadeIn, springSoft, easeOutSmooth, cardHover } from '@/lib/animations'
 
 const categoryIcons = {
   language: Code,
@@ -47,6 +48,8 @@ const skillCategories = [
 ]
 
 export default function ExperiencePage() {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   const [activeTab, setActiveTab] = useState<'experience' | 'skills' | 'certifications' | 'education' | 'achievements'>('experience')
   const [expandedExp, setExpandedExp] = useState<string | null>(null)
 
@@ -65,7 +68,8 @@ export default function ExperiencePage() {
           <motion.div
             className="max-w-3xl mx-auto text-center mb-16"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={motionSafe ? { opacity: 1, y: 0 } : {}}
+            transition={springSoft}
           >
             <Badge variant="default" className="mb-4">
               Career Journey
@@ -83,13 +87,13 @@ export default function ExperiencePage() {
             <motion.nav
               className="md:w-56 flex-shrink-0"
               initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.1 }}
+              animate={motionSafe ? { opacity: 1, x: 0 } : {}}
+              transition={{ ...springSoft, delay: 0.1 }}
             >
               <div className="glass-card rounded-2xl p-2 sticky top-24">
                 <div className="flex md:flex-col gap-1" role="tablist" aria-label="Experience sections">
                   {tabs.map((tab) => (
-                    <button
+                    <motion.button
                       key={tab.id}
                       role="tab"
                       aria-selected={activeTab === tab.id}
@@ -102,10 +106,12 @@ export default function ExperiencePage() {
                           ? 'bg-primary/10 text-primary border border-primary/20 shadow-sm'
                           : 'text-muted-foreground hover:text-foreground hover:bg-accent/10'
                       )}
+                      whileHover={motionSafe ? { scale: 1.02 } : {}}
+                      whileTap={motionSafe ? { scale: 0.98 } : {}}
                     >
                       <tab.icon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
                       <span>{tab.label}</span>
-                    </button>
+                    </motion.button>
                   ))}
                 </div>
               </div>
@@ -114,8 +120,8 @@ export default function ExperiencePage() {
             <motion.div
               className="flex-1 min-w-0"
               initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
+              animate={motionSafe ? { opacity: 1, x: 0 } : {}}
+              transition={{ ...springSoft, delay: 0.2 }}
             >
               <AnimatePresence mode="wait">
                 <div
@@ -141,21 +147,33 @@ export default function ExperiencePage() {
 }
 
 function ExperienceTimeline({ exps, expandedExp, setExpandedExp }: { exps: typeof experiences; expandedExp: string | null; setExpandedExp: (id: string | null) => void }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   return (
     <div className="relative">
-      <div className="absolute left-[1.125rem] top-0 bottom-0 w-px bg-gradient-to-b from-primary to-accent" aria-hidden="true" />
+      <motion.div
+        className="absolute left-[1.125rem] top-0 bottom-0 w-px bg-gradient-to-b from-primary to-accent"
+        initial={{ scaleY: 0 }}
+        animate={motionSafe ? { scaleY: 1 } : {}}
+        style={{ transformOrigin: 'top' }}
+        transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+        aria-hidden="true"
+      />
       {exps.map((exp, index) => (
         <motion.article
           key={exp.id}
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: index * 0.1 }}
+          variants={fadeSlideUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          custom={index}
           className="relative pl-12 pb-12 last:pb-0"
         >
           <div className="absolute left-[1.125rem] top-1 -translate-x-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-background border-2 border-primary z-10" aria-hidden="true">
             <div className="h-1.5 w-1.5 rounded-full bg-primary" />
           </div>
 
+          <motion.div whileHover={motionSafe ? { y: -3 } : {}} transition={springSoft}>
           <Card className="h-full">
             <div className="p-6">
               <div className="flex items-start justify-between gap-4 mb-4">
@@ -231,6 +249,7 @@ function ExperienceTimeline({ exps, expandedExp, setExpandedExp }: { exps: typeo
               </AnimatePresence>
             </div>
           </Card>
+          </motion.div>
         </motion.article>
       ))}
     </div>
@@ -238,6 +257,8 @@ function ExperienceTimeline({ exps, expandedExp, setExpandedExp }: { exps: typeo
 }
 
 function SkillsSection({ skills: skls }: { skills: Skill[] }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   return (
     <div className="space-y-10">
       {skillCategories.map((cat) => {
@@ -247,39 +268,48 @@ function SkillsSection({ skills: skls }: { skills: Skill[] }) {
         return (
           <motion.div
             key={cat.key}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            variants={fadeSlideUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
           >
             <div className="flex items-center gap-2 mb-4">
               <cat.icon className="h-5 w-5 text-primary" aria-hidden="true" />
               <h3 className="text-heading-md font-semibold">{cat.label}</h3>
               <span className="text-body-sm text-muted-foreground">({catSkills.length})</span>
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <motion.div
+              className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+              variants={staggerContainer}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
               {catSkills.map((skill) => (
-                <Card key={skill.name} className="p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-heading-sm font-semibold">{skill.name}</h4>
-                    <Badge variant="outline" size="sm" className={categoryColors[skill.category]}>
-                      {skill.yearsOfExperience}+ yrs
-                    </Badge>
-                  </div>
-                  <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${skill.proficiency}%` }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                    />
-                  </div>
-                  {skill.description && (
-                    <p className="text-body-sm text-muted-foreground mt-2 line-clamp-2">{skill.description}</p>
-                  )}
-                </Card>
+                <motion.div key={skill.name} variants={scaleIn} whileHover={motionSafe ? { y: -4 } : {}}>
+                  <Card className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h4 className="text-heading-sm font-semibold">{skill.name}</h4>
+                      <Badge variant="outline" size="sm" className={categoryColors[skill.category]}>
+                        {skill.yearsOfExperience}+ yrs
+                      </Badge>
+                    </div>
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-primary to-accent rounded-full"
+                        initial={{ width: 0 }}
+                        whileInView={{ width: `${skill.proficiency}%` }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 1, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+                      />
+                    </div>
+                    {skill.description && (
+                      <p className="text-body-sm text-muted-foreground mt-2 line-clamp-2">{skill.description}</p>
+                    )}
+                  </Card>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         )
       })}
@@ -288,14 +318,21 @@ function SkillsSection({ skills: skls }: { skills: Skill[] }) {
 }
 
 function CertificationsSection({ certifications: certs }: { certifications: Certification[] }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <motion.div
+      className="grid gap-4 md:grid-cols-2"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-80px' }}
+    >
       {certs.map((cert) => (
         <motion.article
           key={cert.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={fadeSlideUp}
+          whileHover={motionSafe ? { y: -3 } : {}}
         >
           <Card className="h-full p-6">
             <div className="flex items-start gap-4">
@@ -324,19 +361,26 @@ function CertificationsSection({ certifications: certs }: { certifications: Cert
           </Card>
         </motion.article>
       ))}
-    </div>
+    </motion.div>
   )
 }
 
 function EducationSection({ education: edu }: { education: Education[] }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   return (
-    <div className="space-y-6">
+    <motion.div
+      className="space-y-6"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-80px' }}
+    >
       {edu.map((edu) => (
         <motion.article
           key={edu.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={fadeSlideUp}
+          whileHover={motionSafe ? { y: -3 } : {}}
         >
           <Card className="p-6">
             <div className="flex items-start gap-4">
@@ -363,19 +407,26 @@ function EducationSection({ education: edu }: { education: Education[] }) {
           </Card>
         </motion.article>
       ))}
-    </div>
+    </motion.div>
   )
 }
 
 function AchievementsSection({ achievements: ach }: { achievements: Achievement[] }) {
+  const prefersReducedMotion = useReducedMotion()
+  const motionSafe = !prefersReducedMotion
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <motion.div
+      className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+      variants={staggerContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-80px' }}
+    >
       {ach.map((achievement) => (
         <motion.article
           key={achievement.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          variants={fadeSlideUp}
+          whileHover={motionSafe ? { y: -3 } : {}}
         >
           <Card className="h-full p-6">
             <div className="flex items-start gap-4">
@@ -391,6 +442,6 @@ function AchievementsSection({ achievements: ach }: { achievements: Achievement[
           </Card>
         </motion.article>
       ))}
-    </div>
+    </motion.div>
   )
 }
