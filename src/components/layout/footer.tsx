@@ -83,7 +83,9 @@ export function Footer() {
             <h3 className="text-heading-sm font-semibold mb-4">Connect</h3>
             <address className="not-italic space-y-3">
               <a
-                href="mailto:uussaff@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=uussaff@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-3 text-body-md text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="h-4 w-4 flex-shrink-0" />

@@ -20,13 +20,6 @@ export function Navbar() {
   const motionSafe = !prefersReducedMotion
   const pathname = usePathname()
   const [isOpen, setIsOpen] = React.useState(false)
-  const [isScrolled, setIsScrolled] = React.useState(false)
-
-  React.useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   const handleLinkClick = () => setIsOpen(false)
 
@@ -35,10 +28,7 @@ export function Navbar() {
       <CustomCursor />
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-sticky transition-all duration-300',
-          isScrolled
-            ? 'bg-background/50 backdrop-blur-2xl border-b border-border/40 shadow-[0_1px_2px_hsl(var(--color-foreground)/0.02)]'
-            : 'bg-transparent'
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-background/80 backdrop-blur-2xl border-b border-border/40 shadow-[0_1px_2px_hsl(var(--color-foreground)/0.02)]'
         )}
         role="banner"
       >

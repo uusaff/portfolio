@@ -74,7 +74,7 @@ export default function ContactPage() {
       icon: Mail,
       label: 'Email',
       value: 'uussaff@gmail.com',
-      href: 'mailto:uussaff@gmail.com',
+      href: 'https://mail.google.com/mail/?view=cm&fs=1&to=uussaff@gmail.com',
       description: 'Best way to reach me',
     },
     {
@@ -426,12 +426,12 @@ export default function ContactPage() {
                 Let's talk about your project, an opportunity, or tech in general.
               </p>
               <Button size="lg" asChild variant="outline">
-                <a href="mailto:uussaff@gmail.com">
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=uussaff@gmail.com" target="_blank" rel="noopener noreferrer">
                   Send an Email <ArrowRight className="ml-2 h-5 w-5" />
                 </a>
               </Button>
               <p className="text-body-sm text-muted-foreground mt-4">
-                Or email me directly at <a href="mailto:uussaff@gmail.com" className="text-primary hover:underline">uussaff@gmail.com</a>
+                Or email me directly at <a href="https://mail.google.com/mail/?view=cm&fs=1&to=uussaff@gmail.com" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">uussaff@gmail.com</a>
               </p>
             </div>
           </motion.div>

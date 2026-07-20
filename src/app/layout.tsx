@@ -4,6 +4,8 @@ import './globals.css'
 import { ThemeProvider } from '@/components/shared/theme-provider'
 import { Navbar } from '@/components/layout/navbar'
 import { Footer } from '@/components/layout/footer'
+import { InteractiveGradient } from '@/components/shared/interactive-gradient'
+
 
 const inter = Inter({
   subsets: ['latin'],
@@ -122,6 +124,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-background font-sans antialiased text-foreground">
         <ThemeProvider defaultTheme="system" storageKey="theme">
+          <InteractiveGradient />
           <Navbar />
           <main id="main-content" className="pt-16 md:pt-20">
             {children}

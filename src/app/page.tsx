@@ -145,7 +145,7 @@ export default function HomePage() {
             </motion.div>
 
             <motion.div
-              className="hidden lg:flex items-center justify-center"
+              className="flex items-center justify-center order-first lg:order-last mb-8 lg:mb-0"
               initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
               transition={springSoft}
@@ -153,7 +153,7 @@ export default function HomePage() {
               <motion.img
                 src="/1000232738.png"
                 alt="Yousaf"
-                className="max-w-full h-auto object-contain"
+                className="w-48 h-48 md:w-64 md:h-64 lg:w-full lg:h-auto max-w-full object-contain"
                 animate={motionSafe ? { y: [-6, 6, -6] } : {}}
                 transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
               />

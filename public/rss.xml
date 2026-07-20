@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/rss.xsl"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Yousaf - Portfolio</title>
+    <link>https://portfolio-uusaff.vercel.app</link>
+    <description>Portfolio of Yousaf, Computer Science Student &amp; Full-Stack Developer</description>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Jul 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://portfolio-uusaff.vercel.app/rss.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Exam Tracker - Neural Edition</title>
+      <link>https://github.com/uusaff/exams-tracker</link>
+      <description>Premium exam tracker with canvas animations and cyber aesthetic.</description>
+      <guid>https://github.com/uusaff/exams-tracker</guid>
+    </item>
+    <item>
+      <title>Habit Tracker</title>
+      <link>https://github.com/uusaff/Habit-Tracker</link>
+      <description>Habit tracker with Firebase auth and monthly dashboard views.</description>
+      <guid>https://github.com/uusaff/Habit-Tracker</guid>
+    </item>
+    <item>
+      <title>UMT GPA / CGPA Calculator</title>
+      <link>https://github.com/uusaff/umt-gpa-cgpa-calculator</link>
+      <description>GPA/CGPA calculator with animated validation and PDF export.</description>
+      <guid>https://github.com/uusaff/umt-gpa-cgpa-calculator</guid>
+    </item>
+  </channel>
+</rss>
