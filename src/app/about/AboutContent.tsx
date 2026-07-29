@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
 import { Download, GraduationCap, ChevronDown, CheckCircle, ArrowRight } from 'lucide-react'
-import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaGlobe } from 'react-icons/fa'
+import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope } from 'react-icons/fa'
 import { experiences, education, author, socialLinks } from '@/data'
 import { staggerContainer, fadeSlideUp, fadeIn, scaleIn, springSoft, easeOutSmooth } from '@/lib/animations'
 
@@ -23,23 +23,39 @@ export function AboutPageContent() {
       <section className="section relative overflow-hidden pt-32 lg:pt-40" aria-labelledby="about-heading">
         <div className="absolute inset-0 opacity-[0.03]" style={{ background: 'var(--color-bg-mesh)' }} aria-hidden="true" />
         <div className="container-custom relative">
-          <motion.div
-            className="max-w-4xl mx-auto text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            animate={motionSafe ? { opacity: 1, y: 0 } : {}}
-            transition={springSoft}
-          >
-            <Badge variant="default" className="mb-4">
-              About Me
-            </Badge>
-            <h1 id="about-heading" className="text-display-lg mb-6">
-              Hi, I'm <span className="gradient-text">Yousaf</span>
-            </h1>
-            <p className="text-body-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              Systems engineer who bridges hardware-level logic, custom interaction engines, and high-fidelity UI.
-              BTW, I also do sales — so I communicate like a human and build for actual business outcomes.
-            </p>
-          </motion.div>
+          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+            <motion.div
+              className="text-center lg:text-left"
+              initial={{ opacity: 0, y: 20 }}
+              animate={motionSafe ? { opacity: 1, y: 0 } : {}}
+              transition={springSoft}
+            >
+              <Badge variant="default" className="mb-4">
+                About Me
+              </Badge>
+              <h1 id="about-heading" className="text-display-lg mb-6">
+                Hi, I'm <span className="gradient-text">Yousaf</span>
+              </h1>
+              <p className="text-body-xl text-muted-foreground leading-relaxed max-w-2xl">
+                Systems engineer who bridges hardware-level logic, custom interaction engines, and high-fidelity UI.
+                BTW, I also do sales — so I communicate like a human and build for actual business outcomes.
+              </p>
+            </motion.div>
+            <motion.div
+              className="hidden lg:flex items-center justify-center order-first lg:order-last mb-8 lg:mb-0"
+              initial={{ opacity: 0, x: 40 }}
+              animate={motionSafe ? { opacity: 1, x: 0 } : {}}
+              transition={springSoft}
+            >
+              <motion.img
+                src="/1000232738.png"
+                alt="Yousaf"
+                className="w-48 h-48 md:w-64 md:h-64 lg:w-full lg:h-auto max-w-full object-contain"
+                animate={motionSafe ? { y: [-6, 6, -6] } : {}}
+                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </motion.div>
+          </div>
         </div>
       </section>
 
@@ -223,15 +239,15 @@ export function AboutPageContent() {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button size="lg" asChild>
-                  <Link href="/contact">
+                  <Link href="/contact" className="inline-flex items-center gap-2">
                     Get in Touch
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <a href="/resume.pdf" download target="_blank" rel="noopener noreferrer">
+                  <a href="/resume.pdf" download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                     Download Resume
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-5 w-5" />
                   </a>
                 </Button>
               </div>

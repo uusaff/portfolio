@@ -3,11 +3,10 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { ArrowUp, Mail, Globe, Sun, Moon, Monitor } from 'lucide-react'
+import { ArrowUp, Mail, Globe } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { author, socialLinks, navItems } from '@/data'
 import { Button } from '@/components/ui/button'
-import { ThemeToggle } from '@/components/shared/theme-provider'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()

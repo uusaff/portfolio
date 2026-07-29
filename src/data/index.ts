@@ -1,6 +1,5 @@
-import type { Project, Technology, Experience, Skill, Certification, Achievement, Education, Author, SocialLink, NavItem, Stat, FAQ, Testimonial, ProjectCategory } from '@/types'
+import type { Project, Technology, Experience, Skill, Education, Author, SocialLink, NavItem, ProjectCategory } from '@/types'
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaInstagram, FaFacebook } from 'react-icons/fa'
-import { Star, BookOpen, Award, GraduationCap, Cpu, Code, Terminal, Database, Globe, Zap } from 'lucide-react'
 
 export const navItems: NavItem[] = [
   { label: 'Home', href: '/' },
@@ -30,15 +29,6 @@ export const author: Author = {
   github: 'https://github.com/uusaff',
   website: 'https://github.com/uusaff',
 }
-
-export const stats: Stat[] = [
-  { label: 'Projects Built', value: 7, suffix: '+', icon: 'folder-code' },
-  { label: 'Technologies Used', value: 18, suffix: '+', icon: 'cpu' },
-  { label: 'Open Source Repos', value: 15, suffix: '+', icon: 'github' },
-  { label: 'GitHub Stars', value: 5, suffix: '+', icon: 'star' },
-  { label: 'Courses Completed', value: 12, suffix: '+', icon: 'book' },
-  { label: 'Coding Languages', value: 6, suffix: '+', icon: 'terminal' },
-]
 
 export const technologies: Technology[] = [
   { name: 'React', category: 'framework', proficiency: 90 },
@@ -108,71 +98,6 @@ export const skills: Skill[] = technologies.map((tech, index) => ({
   yearsOfExperience: Math.round((tech.proficiency || 80) / 20),
   description: `Skilled in ${tech.name} with hands-on project experience`,
 }))
-
-export const certifications: Certification[] = [
-  {
-    id: 'cert-1',
-    name: 'React Frontend Development',
-    issuer: 'Self-Taught / Project-Based',
-    date: '2024-01',
-    credentialUrl: 'https://github.com/uusaff/portfolio',
-  },
-  {
-    id: 'cert-2',
-    name: 'Firebase Web Development',
-    issuer: 'Self-Taught / Project-Based',
-    date: '2024-03',
-    credentialUrl: 'https://github.com/uusaff/umt-gpa-cgpa-calculator',
-  },
-]
-
-export const achievements: Achievement[] = [
-  {
-    id: 'ach-1',
-    title: 'UMT GPA / CGPA Calculator',
-    description: 'Built a fully responsive GPA/CGPA calculator with glassmorphism design, animated validation, and PDF export',
-    date: '2026-02',
-    issuer: 'Personal Project',
-    icon: 'graduation-cap',
-    link: 'https://github.com/uusaff/umt-gpa-cgpa-calculator',
-  },
-  {
-    id: 'ach-2',
-    title: 'Open Source Contributions',
-    description: 'Maintained 7+ open source repositories on GitHub covering web apps, hardware control, and algorithms',
-    date: '2026-01',
-    issuer: 'GitHub',
-    icon: 'github',
-    link: 'https://github.com/uusaff',
-  },
-  {
-    id: 'ach-3',
-    title: 'Bluetooth LED Control Engine v4.0',
-    description: 'Built a Python engine with 183 named lighting effects across 12 categories on asyncio architecture',
-    date: '2026-05',
-    issuer: 'Personal Project',
-    icon: 'cpu',
-    link: 'https://github.com/uusaff/bluetooth-led-controller',
-  },
-  {
-    id: 'ach-4',
-    title: 'C++ Stack Tower Balance Game',
-    description: 'Designed and implemented a console game using stack data structures, successfully defended in oral viva',
-    date: '2025-04',
-    issuer: 'UMT Lahore',
-    icon: 'code',
-    link: 'https://github.com/uusaff/stack-tower-balance-game',
-  },
-  {
-    id: 'ach-5',
-    title: 'Hardware-Software Integration',
-    description: 'Developed a Bluetooth LED control system bridging Python software with MohuanLED hardware strips',
-    date: '2026-04',
-    issuer: 'Personal Project',
-    icon: 'cpu',
-    link: 'https://github.com/uusaff/bluetooth-led-controller',
-  },
-]
 
 export const education: Education[] = [
   {
@@ -396,92 +321,4 @@ export const projects: Project[] = [
   },
 ]
 
-export const testimonials: Testimonial[] = [
-  {
-    content: 'Yousaf\'s projects demonstrate a strong grasp of modern web technologies and a keen eye for design. His work on the UMT GPA Calculator shows he can build practical, user-facing tools that solve real problems.',
-    author: 'Faculty Member',
-    role: 'Computer Science Department',
-    company: 'UMT Lahore',
-  },
-  {
-    content: 'The Bluetooth LED Control Engine is a remarkable piece of work — taking a hardware project from basic control to a v4.0 engine with 183 effects shows dedication and systematic thinking.',
-    author: 'Technical Reviewer',
-    role: 'Open Source Community',
-    company: 'GitHub',
-  },
-]
 
-export const faqs: FAQ[] = [
-  {
-    question: 'What is your current focus as a developer?',
-    answer: 'I\'m currently focused on full-stack web development with React, Node.js, Firebase, and Tailwind CSS. I\'m also deep-diving into Data Structures & Algorithms and exploring AI-integrated web applications.',
-    category: 'Technical',
-  },
-  {
-    question: 'What technologies do you work with?',
-    answer: 'I work primarily with React, Tailwind CSS, Framer Motion, Firebase, Node.js, and Vite on the frontend, with C++, Python, and .NET for backend and systems programming. I deploy on Vercel and use Git for version control.',
-    category: 'Technical',
-  },
-  {
-    question: 'Are you looking for internship or job opportunities?',
-    answer: 'Yes! I\'m actively looking for software engineering internships and entry-level opportunities where I can apply my full-stack development skills and continue learning from experienced engineers.',
-    category: 'Career',
-  },
-  {
-    question: 'What kind of projects do you enjoy building?',
-    answer: 'I enjoy building projects with a focus on aesthetics — glassmorphism, dark themes, and rich animations with Framer Motion. I also love hardware-software integration projects like my Bluetooth LED controller.',
-    category: 'Projects',
-  },
-  {
-    question: 'Do you collaborate on open source projects?',
-    answer: 'Absolutely. I maintain 7+ repositories on GitHub and am always open to collaboration. Feel free to open issues or PRs on any of my projects.',
-    category: 'Open Source',
-  },
-  {
-    question: 'How can someone reach out to you?',
-    answer: 'The best way is through email at uussaff@gmail.com or connecting on LinkedIn at linkedin.com/in/uusaff. I\'m always happy to chat about tech, projects, or potential collaborations.',
-    category: 'Contact',
-  },
-]
-
-export const coreValues = [
-  {
-    title: 'Full-Stack Craftsmanship',
-    description: 'I believe in building complete, polished solutions from frontend to backend. Every project should be visually stunning, functionally robust, and maintainable.',
-    icon: Code,
-  },
-  {
-    title: 'Aesthetic Excellence',
-    description: 'Glassmorphism, dark themes, smooth animations — the visual experience matters as much as the code. I strive to make every interface feel premium and intentional.',
-    icon: Star,
-  },
-  {
-    title: 'Continuous Learning',
-    description: 'Technology evolves fast. I dedicate time to explore new tools, frameworks, and paradigms — from AI integration to hardware control — staying curious across domains.',
-    icon: BookOpen,
-  },
-  {
-    title: 'Practical Problem Solving',
-    description: 'I build tools that solve real problems — GPA calculators for students, calorie trackers for health-conscious users, LED controllers for hobbyists. Code should serve people.',
-    icon: Zap,
-  },
-  {
-    title: 'Open Source & Collaboration',
-    description: 'Sharing knowledge and code makes the community stronger. I maintain my projects publicly on GitHub and welcome contributions, feedback, and collaboration.',
-    icon: Globe,
-  },
-  {
-    title: 'Hardware-Software Integration',
-    description: 'The line between digital and physical fascinates me. From Bluetooth LED controllers to systems programming, I enjoy working across the full stack of technology.',
-    icon: Cpu,
-  },
-]
-
-export const personalInterests = [
-  { label: 'Web Development', description: 'Building full-stack apps with React, Firebase, and Tailwind CSS' },
-  { label: 'Hardware Projects', description: 'Bluetooth LED controllers, IoT devices, and hardware-software integration' },
-  { label: 'AI & Machine Learning', description: 'Exploring AI API integration and intelligent application features' },
-  { label: 'Data Structures & Algorithms', description: 'Deep-diving into DSA for stronger problem-solving foundations' },
-  { label: 'Open Source', description: 'Maintaining 7+ repositories on GitHub' },
-  { label: 'UI/UX Design', description: 'Glassmorphism, dark themes, and animation-rich interfaces' },
-]

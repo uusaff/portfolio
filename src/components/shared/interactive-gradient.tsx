@@ -33,7 +33,8 @@ export function InteractiveGradient() {
     if (reduce) return
     let frame: number
     let running = true
-    function tick() {
+
+    const tick = () => {
       if (!running) return
       const el = ref.current
       if (!el) return
@@ -48,8 +49,25 @@ export function InteractiveGradient() {
       el.style.setProperty('--gy3', `${(50 + Math.sin(t + 4.18879) * 25).toFixed(0)}%`)
       frame = requestAnimationFrame(tick)
     }
+
+    const onVisibility = () => {
+      if (document.hidden) {
+        running = false
+        cancelAnimationFrame(frame)
+      } else {
+        running = true
+        frame = requestAnimationFrame(tick)
+      }
+    }
+
+    document.addEventListener('visibilitychange', onVisibility)
     frame = requestAnimationFrame(tick)
-    return () => { running = false; cancelAnimationFrame(frame) }
+
+    return () => {
+      running = false
+      cancelAnimationFrame(frame)
+      document.removeEventListener('visibilitychange', onVisibility)
+    }
   }, [pX, pY, phase, reduce])
 
   const handleMove = (e: React.PointerEvent) => {
@@ -80,8 +98,7 @@ export function InteractiveGradient() {
           'radial-gradient(circle at var(--gx2,78%) var(--gy2,50%), hsl(var(--accent)) 0%, hsl(var(--accent)) 25%, transparent 60%)',
           'radial-gradient(circle at var(--gx3,50%) var(--gy3,78%), hsl(var(--primary)) 0%, hsl(var(--primary)) 25%, transparent 60%)',
         ].join(', '),
-        filter: 'blur(100px)',
-        willChange: 'background',
+        filter: 'blur(60px)',
       }}
       onPointerMove={handleMove}
       onPointerLeave={handleLeave}

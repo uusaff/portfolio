@@ -1,7 +1,6 @@
 'use client'
 
-import { useReducedMotion } from 'framer-motion'
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -18,12 +17,6 @@ import {
   cardHover,
 } from '@/lib/animations'
 
-const floatVariants = {
-  initial: { y: 0 },
-  animate: { y: [-20, 20, -20], transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' as const } },
-  animate2: { y: [-20, 20, -20], transition: { duration: 6, repeat: Infinity, ease: 'easeInOut' as const, delay: 2 } },
-}
-
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion()
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 3)
@@ -38,31 +31,28 @@ export default function HomePage() {
       >
         <div className="absolute inset-0" style={{ background: 'var(--color-bg-mesh)' }} aria-hidden="true" />
 
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-15"
-          variants={floatVariants}
-          initial="initial"
-          animate={motionSafe ? 'animate' : 'initial'}
-          style={{ background: 'hsl(var(--color-primary))' }}
-          aria-hidden="true"
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-15"
-          variants={floatVariants}
-          initial="initial"
-          animate={motionSafe ? 'animate2' : 'initial'}
-          style={{ background: 'hsl(var(--color-accent))' }}
-          aria-hidden="true"
-        />
+        {motionSafe && (
+          <>
+            <div
+              className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-2xl opacity-15 animate-float"
+              style={{ background: 'hsl(var(--color-primary))' }}
+              aria-hidden="true"
+            />
+            <div
+              className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-2xl opacity-15 animate-float-delayed"
+              style={{ background: 'hsl(var(--color-accent))' }}
+              aria-hidden="true"
+            />
+          </>
+        )}
 
         <div className="container-custom relative z-10 py-20">
-          <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-            <motion.div
-              className="text-center lg:text-left"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-            >
+          <motion.div
+            className="max-w-3xl mx-auto text-center"
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+          >
               <motion.div
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-body-sm font-medium mb-8"
                 variants={fadeSlideUp}
@@ -84,23 +74,23 @@ export default function HomePage() {
               </motion.h1>
 
               <motion.p
-                className="text-display-sm text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0"
+                className="text-display-sm text-muted-foreground mb-8 max-w-2xl mx-auto"
                 variants={fadeSlideUp}
               >
                 I build digital products that feel as precise as they perform.
               </motion.p>
 
               <motion.p
-                className="text-body-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed"
+                className="text-body-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
                 variants={fadeSlideUp}
               >
                 From system-level Bluetooth automation to custom drag-and-drop engines.
                 I engineer high-fidelity interfaces built to convert.
               </motion.p>
 
-              <motion.div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-12" variants={fadeSlideUp}>
+              <motion.div className="flex flex-wrap items-center justify-center gap-4 mb-12" variants={fadeSlideUp}>
                 <Button size="lg" asChild>
-                  <Link href="/contact">
+                  <Link href="/contact" className="inline-flex items-center gap-2">
                     Get in Touch
                     <ArrowRight className="h-5 w-5" aria-hidden="true" />
                   </Link>
@@ -111,7 +101,7 @@ export default function HomePage() {
               </motion.div>
 
               <motion.div
-                className="flex items-center justify-center lg:justify-start gap-4"
+                className="flex items-center justify-center gap-4"
                 variants={fadeSlideUp}
               >
                 {[
@@ -139,22 +129,6 @@ export default function HomePage() {
                 ))}
               </motion.div>
             </motion.div>
-
-            <motion.div
-              className="flex items-center justify-center order-first lg:order-last mb-8 lg:mb-0"
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={springSoft}
-            >
-              <motion.img
-                src="/1000232738.png"
-                alt="Yousaf"
-                className="w-48 h-48 md:w-64 md:h-64 lg:w-full lg:h-auto max-w-full object-contain"
-                animate={motionSafe ? { y: [-6, 6, -6] } : {}}
-                transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-              />
-            </motion.div>
-          </div>
         </div>
 
         <motion.div
@@ -228,17 +202,17 @@ export default function HomePage() {
                   <div className="flex items-center gap-3 pt-4 mt-4 border-t border-border">
                     {project.githubUrl && (
                       <Button variant="outline" size="sm" className="flex-1" asChild>
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                          <FaGithub className="h-4 w-4 mr-2" />
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                           View Code
+                          <FaGithub className="h-4 w-4" />
                         </a>
                       </Button>
                     )}
                     {project.liveUrl && (
                       <Button variant="default" size="sm" className="flex-1" asChild>
-                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
-                          <ExternalLink className="h-4 w-4 mr-2" />
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                           Live Demo
+                          <ExternalLink className="h-4 w-4" />
                         </a>
                       </Button>
                     )}
@@ -261,7 +235,7 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <Button variant="outline" size="lg" asChild>
-              <Link href="/projects">View All Projects <ArrowRight className="h-5 w-5" /></Link>
+              <Link href="/projects" className="inline-flex items-center gap-2">View All Projects <ArrowRight className="h-5 w-5" /></Link>
             </Button>
           </motion.div>
         </div>
@@ -285,15 +259,15 @@ export default function HomePage() {
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Button size="lg" asChild>
-                  <Link href="/contact">
+                  <Link href="/contact" className="inline-flex items-center gap-2">
                     Get in Touch
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-5 w-5" />
                   </Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <a href="/resume.pdf" download target="_blank" rel="noopener noreferrer">
+                  <a href="/resume.pdf" download target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
                     Download Resume
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-5 w-5" />
                   </a>
                 </Button>
               </div>

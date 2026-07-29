@@ -93,27 +93,6 @@ export interface Skill {
   description?: string
 }
 
-export interface Certification {
-  id: string
-  name: string
-  issuer: string
-  date: string
-  expiryDate?: string
-  credentialId?: string
-  credentialUrl?: string
-  logo?: string
-}
-
-export interface Achievement {
-  id: string
-  title: string
-  description: string
-  date: string
-  issuer?: string
-  icon?: string
-  link?: string
-}
-
 export interface Education {
   id: string
   institution: string
@@ -151,72 +130,4 @@ export interface NavItem {
   href: string
   icon?: string
   children?: NavItem[]
-}
-
-export interface Stat {
-  label: string
-  value: string | number
-  suffix?: string
-  prefix?: string
-  change?: string
-  trend?: 'up' | 'down' | 'neutral'
-  icon?: string
-}
-
-export interface FAQ {
-  question: string
-  answer: string
-  category?: string
-}
-
-export interface ContactFormData {
-  name: string
-  email: string
-  subject: string
-  message: string
-  company?: string
-}
-
-export interface SEOProps {
-  title: string
-  description: string
-  image?: string
-  url?: string
-  type?: 'website' | 'article'
-  publishedTime?: string
-  modifiedTime?: string
-  author?: string
-  tags?: string[]
-}
-
-export interface AnimationConfig {
-  duration?: number
-  delay?: number
-  ease?: string
-  stagger?: number
-}
-
-export interface ViewportConfig {
-  once?: boolean
-  margin?: string
-  amount?: number | string
-}
-
-export type Theme = 'light' | 'dark' | 'system'
-
-export interface UserPreferences {
-  theme: Theme
-  reducedMotion: boolean
-  highContrast: boolean
-}
-
-export interface CursorPosition {
-  x: number
-  y: number
-}
-
-export interface ScrollPosition {
-  x: number
-  y: number
-  progress: number
 }

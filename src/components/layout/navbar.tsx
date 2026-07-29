@@ -39,11 +39,10 @@ export function Navbar() {
           <div className="flex h-16 md:h-20 items-center justify-between gap-4">
             <Link
               href="/"
-              className="flex items-center gap-2 flex-shrink-0"
-              aria-label="Yousaf - Home"
+              className="flex-shrink-0"
+              aria-label="Home"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary font-bold text-lg">Y</span>
-              <span className="hidden sm:block text-heading-sm font-semibold">Yousaf</span>
+              <span className="sr-only">Home</span>
             </Link>
 
             <motion.div

@@ -10,7 +10,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { Mail, Phone, MapPin, Calendar, Clock, CheckCircle, XCircle, Loader2, Send, Globe, ArrowRight } from 'lucide-react'
+import { Mail, Phone, MapPin, Calendar, CheckCircle, XCircle, Loader2, Send, ArrowRight } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
 import { author, socialLinks } from '@/data'
 import { staggerContainer, fadeSlideUp, fadeSlideLeft, fadeSlideRight, fadeIn, scaleIn, springSoft, easeOutSmooth, cardHover } from '@/lib/animations'
@@ -337,13 +337,13 @@ export default function ContactPage() {
                     <Button type="submit" size="lg" className="w-full md:w-auto" disabled={status === 'submitting'}>
                       {status === 'submitting' ? (
                         <>
-                          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                          <Loader2 className="h-5 w-5 animate-spin" />
                           Sending...
                         </>
                       ) : (
                         <>
                           Send Message
-                          <Send className="ml-2 h-5 w-5" />
+                          <Send className="h-5 w-5" />
                         </>
                       )}
                     </Button>
@@ -377,8 +377,8 @@ export default function ContactPage() {
                 Let's talk about your project, an opportunity, or tech in general.
               </p>
               <Button size="lg" asChild variant="outline">
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=uussaff@gmail.com" target="_blank" rel="noopener noreferrer">
-                  Send an Email <ArrowRight className="ml-2 h-5 w-5" />
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=uussaff@gmail.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
+                  Send an Email <ArrowRight className="h-5 w-5" />
                 </a>
               </Button>
               <p className="text-body-sm text-muted-foreground mt-4">
