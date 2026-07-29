@@ -8,51 +8,15 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { Download, Award, GraduationCap, Star, BookOpen, ExternalLink, CheckCircle, ChevronDown, ArrowRight } from 'lucide-react'
+import { Download, GraduationCap, ChevronDown, CheckCircle, ArrowRight } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaGlobe } from 'react-icons/fa'
-import { stats, experiences, education, certifications, achievements, coreValues, personalInterests, author, socialLinks } from '@/data'
+import { experiences, education, author, socialLinks } from '@/data'
 import { staggerContainer, fadeSlideUp, fadeIn, scaleIn, springSoft, easeOutSmooth } from '@/lib/animations'
 
 export function AboutPageContent() {
   const prefersReducedMotion = useReducedMotion()
   const [expandedExp, setExpandedExp] = useState<string | null>(null)
   const motionSafe = !prefersReducedMotion
-
-  const categoryIcons = {
-    language: BookOpen,
-    framework: BookOpen,
-    library: BookOpen,
-    tool: BookOpen,
-    database: BookOpen,
-    cloud: BookOpen,
-    devops: BookOpen,
-    testing: BookOpen,
-    other: Star,
-  }
-
-  const categoryColors = {
-    language: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-    framework: 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-    library: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
-    tool: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
-    database: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-    cloud: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400',
-    devops: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-    testing: 'bg-pink-100 text-pink-700 dark:bg-pink-900/30 dark:text-pink-400',
-    other: 'bg-gray-100 text-gray-700 dark:bg-gray-900/30 dark:text-gray-400',
-  }
-
-  const skillCategories = [
-    { key: 'language', label: 'Languages', icon: BookOpen },
-    { key: 'framework', label: 'Frameworks', icon: BookOpen },
-    { key: 'library', label: 'Libraries', icon: BookOpen },
-    { key: 'tool', label: 'Tools', icon: BookOpen },
-    { key: 'database', label: 'Databases', icon: BookOpen },
-    { key: 'cloud', label: 'Cloud', icon: BookOpen },
-    { key: 'devops', label: 'DevOps', icon: BookOpen },
-    { key: 'testing', label: 'Testing', icon: BookOpen },
-    { key: 'other', label: 'Other', icon: Star },
-  ]
 
   return (
     <>
@@ -72,27 +36,9 @@ export function AboutPageContent() {
               Hi, I'm <span className="gradient-text">Yousaf</span>
             </h1>
             <p className="text-body-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto">
-              Computer Science student at UMT, Lahore with a passion for full-stack web development.
-              I build modern applications with React, Firebase, Tailwind CSS, and Framer Motion —
-              focusing on clean aesthetics, dark themes, and animation-rich interfaces.
+              Systems engineer who bridges hardware-level logic, custom interaction engines, and high-fidelity UI.
+              BTW, I also do sales — so I communicate like a human and build for actual business outcomes.
             </p>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-4"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-          >
-            {stats.map((stat) => (
-              <motion.div key={stat.label} variants={fadeSlideUp} className="text-center">
-                <div className="text-display-md font-bold gradient-text mb-2">
-                  {stat.prefix || ''}{stat.value}{stat.suffix || ''}
-                </div>
-                <div className="text-body-md text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
           </motion.div>
         </div>
       </section>
@@ -211,47 +157,6 @@ export function AboutPageContent() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="values-heading">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-4xl mx-auto text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={springSoft}
-          >
-            <Badge variant="secondary" className="mb-4">
-              Core Values
-            </Badge>
-            <h2 id="values-heading" className="text-display-md mb-6">
-              Principles I Live By
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-          >
-            {coreValues.map((value) => (
-              <motion.article key={value.title} variants={fadeSlideUp}>
-                <Card className="h-full">
-                  <CardContent className="pt-6">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary mb-4">
-                      <value.icon className="h-6 w-6" />
-                    </div>
-                    <h3 className="text-heading-md font-semibold mb-2">{value.title}</h3>
-                    <p className="text-body-md text-muted-foreground">{value.description}</p>
-                  </CardContent>
-                </Card>
-              </motion.article>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       <section className="section bg-muted/30" aria-labelledby="education-heading">
         <div className="container-custom">
           <motion.div
@@ -289,128 +194,8 @@ export function AboutPageContent() {
                       <p className="text-body-sm text-muted-foreground">
                         {new Date(edu.startDate).getFullYear()} — {edu.current ? 'Present' : new Date(edu.endDate || '').getFullYear()}
                       </p>
-                      {edu.honors && (
-                        <div className="mt-2 flex flex-wrap gap-1">
-                          {edu.honors.map((honor) => (
-                            <Badge key={honor} variant="secondary" className="text-body-xs">
-                              {honor}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
                     </div>
                   </div>
-                </Card>
-              </motion.article>
-            ))}
-            {certifications.map((cert) => (
-              <motion.article key={cert.id} variants={fadeSlideUp}>
-                <Card className="h-full p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                      <Award className="h-6 w-6" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="text-heading-md font-semibold">{cert.name}</h3>
-                      <p className="text-primary font-medium">{cert.issuer}</p>
-                      <p className="text-body-sm text-muted-foreground mt-1">
-                        Earned {new Date(cert.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                        {cert.expiryDate && ` · Expires ${new Date(cert.expiryDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
-                      </p>
-                      {cert.credentialUrl && (
-                        <a
-                          href={cert.credentialUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-body-sm text-primary hover:underline mt-2 inline-block"
-                        >
-                          Verify Credential
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                </Card>
-              </motion.article>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="achievements-heading">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-4xl mx-auto text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={springSoft}
-          >
-            <Badge variant="secondary" className="mb-4">
-              Recognition
-            </Badge>
-            <h2 id="achievements-heading" className="text-display-md mb-6">
-              Achievements & Awards
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-          >
-            {achievements.map((achievement) => (
-              <motion.article key={achievement.id} variants={fadeSlideUp}>
-                <Card className="h-full p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning/10 text-warning shrink-0">
-                      <Award className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-heading-md font-semibold">{achievement.title}</h3>
-                      <p className="text-body-md text-muted-foreground mt-1">{achievement.description}</p>
-                      <p className="text-body-sm text-primary mt-2">{achievement.issuer} · {new Date(achievement.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
-                    </div>
-                  </div>
-                </Card>
-              </motion.article>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section bg-muted/30" aria-labelledby="interests-heading">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-4xl mx-auto text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={springSoft}
-          >
-            <Badge variant="secondary" className="mb-4">
-              Personal
-            </Badge>
-            <h2 id="interests-heading" className="text-display-md mb-6">
-              Beyond Code
-            </h2>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-          >
-            {personalInterests.map((interest) => (
-              <motion.article key={interest.label} variants={fadeSlideUp}>
-                <Card>
-                  <CardContent className="pt-6">
-                    <h3 className="text-heading-md font-semibold mb-1">{interest.label}</h3>
-                    <p className="text-body-md text-muted-foreground">{interest.description}</p>
-                  </CardContent>
                 </Card>
               </motion.article>
             ))}

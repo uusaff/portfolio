@@ -10,9 +10,9 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { Mail, Phone, MapPin, Calendar, Clock, CheckCircle, XCircle, Loader2, Send, Globe, ArrowRight, ChevronDown } from 'lucide-react'
+import { Mail, Phone, MapPin, Calendar, Clock, CheckCircle, XCircle, Loader2, Send, Globe, ArrowRight } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa'
-import { author, socialLinks, faqs } from '@/data'
+import { author, socialLinks } from '@/data'
 import { staggerContainer, fadeSlideUp, fadeSlideLeft, fadeSlideRight, fadeIn, scaleIn, springSoft, easeOutSmooth, cardHover } from '@/lib/animations'
 
 export default function ContactPage() {
@@ -352,55 +352,6 @@ export default function ContactPage() {
               </Card>
             </motion.div>
           </div>
-        </div>
-      </section>
-
-      <section className="section bg-muted/30" aria-labelledby="faq-heading">
-        <div className="container-custom">
-          <motion.div
-            className="max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={springSoft}
-          >
-            <div className="text-center mb-12">
-              <Badge variant="secondary" className="mb-4">
-                FAQ
-              </Badge>
-              <h2 id="faq-heading" className="text-display-md">
-                Frequently Asked Questions
-              </h2>
-            </div>
-
-            <motion.div
-              className="space-y-4"
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-80px' }}
-            >
-              {faqs.map((faq) => (
-                <motion.article
-                  key={faq.question}
-                  variants={fadeSlideUp}
-                >
-                  <details className="group">
-                    <summary className="flex items-center justify-between p-6 cursor-pointer list-none rounded-2xl glass-card transition-all duration-200 hover:shadow-[0_1px_2px_hsl(var(--color-foreground)/0.04),0_8px_24px_hsl(var(--color-foreground)/0.08)] hover:border-border/80">
-                      <h3 className="text-heading-md font-semibold pr-8">{faq.question}</h3>
-                      <ChevronDown className={cn(
-                        'h-5 w-5 text-muted-foreground transition-transform duration-200 shrink-0',
-                        'group-open:rotate-180'
-                      )} aria-hidden="true" />
-                    </summary>
-                    <div className="px-6 pb-6 text-body-md text-muted-foreground border-t border-border rounded-b-2xl bg-background/50">
-                      {faq.answer}
-                    </div>
-                  </details>
-                </motion.article>
-              ))}
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 

@@ -7,17 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
-import { ArrowRight, Star, MousePointer2 } from 'lucide-react'
+import { ArrowRight, MousePointer2, ExternalLink } from 'lucide-react'
 import { FaGithub, FaLinkedin, FaTwitter, FaEnvelope, FaInstagram } from 'react-icons/fa'
-import { stats, projects, author, testimonials, technologies, socialLinks } from '@/data'
+import { projects, author, socialLinks } from '@/data'
 import {
   staggerContainer,
   fadeSlideUp,
   fadeIn,
-  scaleIn,
-  springConfig,
   springSoft,
-  easeOutSmooth,
   cardHover,
 } from '@/lib/animations'
 
@@ -30,7 +27,6 @@ const floatVariants = {
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion()
   const featuredProjects = projects.filter((p) => p.featured).slice(0, 3)
-  const topTechnologies = technologies.slice(0, 12)
 
   const motionSafe = !prefersReducedMotion
 
@@ -91,15 +87,15 @@ export default function HomePage() {
                 className="text-display-sm text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0"
                 variants={fadeSlideUp}
               >
-                Computer Science Student & Full-Stack Developer
+                I build digital products that feel as precise as they perform.
               </motion.p>
 
               <motion.p
                 className="text-body-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10 leading-relaxed"
                 variants={fadeSlideUp}
               >
-                Building modern web applications with React, Firebase, and Tailwind CSS.
-                Passionate about clean UI, dark themes, and animation-rich interfaces.
+                From system-level Bluetooth automation to custom drag-and-drop engines.
+                I engineer high-fidelity interfaces built to convert.
               </motion.p>
 
               <motion.div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mb-12" variants={fadeSlideUp}>
@@ -173,28 +169,6 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      <section className="py-16 md:py-24 bg-muted/30" aria-labelledby="stats-heading">
-        <div className="container-custom">
-          <motion.div
-            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-          >
-            {stats.map((stat) => (
-              <motion.div key={stat.label} variants={fadeSlideUp} className="text-center">
-                <div className="text-display-lg font-bold gradient-text mb-1">
-                  {stat.value}
-                  {stat.suffix && <span className="text-heading-md">{stat.suffix}</span>}
-                </div>
-                <div className="text-body-md text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
       <section className="section" aria-labelledby="featured-heading">
         <div className="container-custom">
           <motion.div
@@ -205,14 +179,13 @@ export default function HomePage() {
             transition={springSoft}
           >
             <Badge variant="default" className="mb-4">
-              Featured Work
+              Top Projects
             </Badge>
             <h2 id="featured-heading" className="text-display-md mb-4">
-              Selected Projects
+              Engineering Work
             </h2>
             <p className="text-body-lg text-muted-foreground">
-              A curated selection of projects showcasing my work across full-stack development,
-              developer tools, and modern web applications.
+              Custom engines, hardware control, and systems-level logic — not just CRUD apps.
             </p>
           </motion.div>
 
@@ -223,56 +196,57 @@ export default function HomePage() {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
           >
-            {featuredProjects.map((project, index) => (
+            {featuredProjects.map((project) => (
               <motion.article
                 key={project.id}
                 variants={fadeSlideUp}
                 whileHover={motionSafe ? cardHover : {}}
                 className="group"
               >
-                <Card className="h-full overflow-hidden p-0">
-                  <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-primary/5 via-transparent to-accent/5">
-                    <div className="absolute inset-0 flex items-center justify-center p-8">
-                      <div className="text-center">
-                        <div className="text-5xl font-bold gradient-text mb-2">{'0'}{index + 1}</div>
-                        <div className="text-body-sm text-muted-foreground">{project.category}</div>
-                      </div>
-                    </div>
+                <Card className="h-full p-6 flex flex-col">
+                  <div className="flex flex-wrap gap-1.5 mb-3">
+                    {project.tags.slice(0, 3).map((tag) => (
+                      <Badge key={tag} variant="outline" size="sm">{tag}</Badge>
+                    ))}
                   </div>
-                  <div className="p-6 space-y-4">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.tags.slice(0, 4).map((tag) => (
-                        <Badge key={tag} variant="outline" size="sm">
-                          {tag}
-                        </Badge>
-                      ))}
+                  <h3 className="text-heading-md font-semibold mb-3">{project.title}</h3>
+                  <div className="flex-1 space-y-3">
+                    <div>
+                      <p className="text-body-xs font-semibold text-primary uppercase tracking-wider mb-1">Challenge</p>
+                      <p className="text-body-md text-muted-foreground">{project.challenges[0]}</p>
                     </div>
-                    <h3 className="text-heading-md font-semibold group-hover:text-primary transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="text-body-md text-muted-foreground line-clamp-2">
-                      {project.shortDescription}
-                    </p>
-                    <div className="flex items-center justify-between pt-4 border-t border-border">
-                      <div className="flex items-center gap-3 text-body-sm text-muted-foreground">
-                        {project.metrics?.slice(0, 2).map((metric, i) => (
-                          <span key={i}>{metric.label}: <strong>{metric.value}</strong></span>
+                    {project.metrics && project.metrics.length > 0 && (
+                      <div className="flex flex-wrap gap-3 pt-2">
+                        {project.metrics.slice(0, 3).map((metric) => (
+                          <span key={metric.label} className="text-body-sm text-muted-foreground">
+                            {metric.label}: <strong className="text-foreground">{metric.value}</strong>
+                          </span>
                         ))}
                       </div>
-                      <Button variant="ghost" size="sm" asChild>
-                        <Link href={project.caseStudyUrl || project.githubUrl || '#'} className="inline-flex items-center gap-1">
-                          Details
-                          <motion.span
-                            className="inline-flex"
-                            initial={{ x: 0 }}
-                            whileHover={motionSafe ? { x: 3 } : {}}
-                            transition={springSoft}
-                          >
-                            <ArrowRight className="h-3.5 w-3.5" />
-                          </motion.span>
-                        </Link>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3 pt-4 mt-4 border-t border-border">
+                    {project.githubUrl && (
+                      <Button variant="outline" size="sm" className="flex-1" asChild>
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                          <FaGithub className="h-4 w-4 mr-2" />
+                          View Code
+                        </a>
                       </Button>
-                    </div>
+                    )}
+                    {project.liveUrl && (
+                      <Button variant="default" size="sm" className="flex-1" asChild>
+                        <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                          <ExternalLink className="h-4 w-4 mr-2" />
+                          Live Demo
+                        </a>
+                      </Button>
+                    )}
+                    {!project.githubUrl && !project.liveUrl && (
+                      <Button variant="ghost" size="sm" className="flex-1" asChild>
+                        <Link href={project.githubUrl || '#'}>Details</Link>
+                      </Button>
+                    )}
                   </div>
                 </Card>
               </motion.article>
@@ -289,117 +263,6 @@ export default function HomePage() {
             <Button variant="outline" size="lg" asChild>
               <Link href="/projects">View All Projects <ArrowRight className="h-5 w-5" /></Link>
             </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section bg-muted/30" aria-labelledby="tech-heading">
-        <div className="container-custom">
-          <motion.div
-            className="text-center max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={springSoft}
-          >
-            <Badge variant="secondary" className="mb-4">
-              Tech Stack
-            </Badge>
-            <h2 id="tech-heading" className="text-display-md mb-4">
-              Technologies & Tools
-            </h2>
-            <p className="text-body-lg text-muted-foreground">
-              Proficient across the full stack with experience in modern web technologies,
-              cloud services, and developer tooling.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-          >
-            {topTechnologies.map((tech) => (
-              <motion.div key={tech.name} variants={scaleIn} whileHover={motionSafe ? { scale: 1.05, y: -4 } : {}}>
-                <Card className="h-full text-center p-5">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 mx-auto mb-3">
-                    <span className="text-xl font-bold gradient-text">{tech.name.charAt(0)}</span>
-                  </div>
-                  <h4 className="text-heading-sm font-semibold mb-1">{tech.name}</h4>
-                  <Badge variant="outline" size="sm">{tech.category}</Badge>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <motion.div
-            className="text-center mt-12"
-            variants={fadeIn}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <Button variant="ghost" size="lg" asChild>
-              <Link href="/experience">View All Technologies <ArrowRight className="h-5 w-5" /></Link>
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="testimonials-heading">
-        <div className="container-custom">
-          <motion.div
-            className="text-center max-w-3xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={springSoft}
-          >
-            <Badge variant="secondary" className="mb-4">
-              Testimonials
-            </Badge>
-            <h2 id="testimonials-heading" className="text-display-md mb-4">
-              Trusted by Peers
-            </h2>
-            <p className="text-body-lg text-muted-foreground">
-              Feedback from colleagues and mentors I've had the privilege to work with.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-80px' }}
-          >
-            {testimonials.map((testimonial) => (
-              <motion.article key={testimonial.author} variants={fadeSlideUp} whileHover={motionSafe ? { y: -4 } : {}}>
-                <Card className="h-full p-6">
-                  <div className="flex gap-0.5 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-warning text-warning" aria-hidden="true" />
-                    ))}
-                  </div>
-                  <blockquote className="text-body-md text-foreground mb-6 leading-relaxed">
-                    &ldquo;{testimonial.content}&rdquo;
-                  </blockquote>
-                  <div className="flex items-center gap-3 pt-4 border-t border-border">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary font-bold text-sm">
-                      {testimonial.author.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold">{testimonial.author}</p>
-                      <p className="text-body-xs text-muted-foreground">
-                        {testimonial.role}, {testimonial.company}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              </motion.article>
-            ))}
           </motion.div>
         </div>
       </section>

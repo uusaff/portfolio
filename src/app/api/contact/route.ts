@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import nodemailer from 'nodemailer'
 
 interface ContactBody {
   name: string
@@ -8,10 +9,20 @@ interface ContactBody {
   company?: string
 }
 
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,
+  port: Number(process.env.SMTP_PORT),
+  secure: false,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+})
+
 export async function POST(request: NextRequest) {
   try {
     const body: ContactBody = await request.json()
-    const { name, email, subject, message } = body
+    const { name, email, subject, message, company } = body
 
     if (!name?.trim() || !email?.trim() || !subject?.trim() || !message?.trim()) {
       return NextResponse.json({ error: 'All required fields must be filled' }, { status: 400 })
@@ -25,10 +36,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Message must be at least 20 characters' }, { status: 400 })
     }
 
-    console.log('Contact form submission:', { name, email, subject, message, company: body.company })
+    await transporter.sendMail({
+      from: `"Portfolio Contact" <${process.env.SMTP_USER}>`,
+      replyTo: email,
+      to: process.env.CONTACT_EMAIL,
+      subject: `[Portfolio] ${subject}`,
+      html: `
+        <h3>New Contact Message</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        ${company ? `<p><strong>Company:</strong> ${company}</p>` : ''}
+        <p><strong>Subject:</strong> ${subject}</p>
+        <hr/>
+        <p>${message.replace(/\n/g, '<br/>')}</p>
+      `,
+    })
 
     return NextResponse.json({ success: true, message: 'Message sent successfully' })
-  } catch {
-    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+  } catch (error) {
+    console.error('Failed to send email:', error)
+    return NextResponse.json({ error: 'Failed to send message. Please try again later.' }, { status: 500 })
   }
 }

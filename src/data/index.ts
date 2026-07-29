@@ -85,13 +85,13 @@ export const experiences: Experience[] = [
   },
   {
     id: 'exp-2',
-    company: 'Self-Employed / Freelance',
-    role: 'Full-Stack Web Developer',
+    company: 'Self-Employed',
+    role: 'Independent Developer',
     location: 'Lahore, Pakistan',
     type: 'freelance',
     startDate: '2024-01',
     current: true,
-    description: 'Developing full-stack web applications with modern tech stacks. Specializing in React-based SPAs with Firebase backends, glassmorphism UI design, and animation-rich user experiences.',
+    description: 'Building full-stack and systems-level projects — from async hardware controllers to custom interaction engines. Focused on engineering depth and polished, high-fidelity UIs.',
     achievements: [
       'Built Nutrition Cal — AI-powered calorie tracker with Firebase auth and Anthropic SDK integration',
       'Created Exam Tracker — premium SaaS-style exam tracker with canvas-based animated backgrounds',
@@ -204,8 +204,8 @@ export const projects: Project[] = [
     role: 'Solo Developer',
     teamSize: 1,
     challenges: [
-      'Implementing compositor-only animations for smooth 60fps performance',
-      'Designing a cohesive crimson/pink cyber palette with glassmorphism elements',
+      'Achieving consistent 60fps canvas animations while maintaining complex reactive state across 15+ animated components',
+      'Building a cohesive crimson/pink design system without a UI library — all glassmorphism, typography, and palette tokens hand-defined',
     ],
     solutions: [
       'Used CSS transforms and opacity-only animations to leverage compositor threads',
@@ -239,8 +239,8 @@ export const projects: Project[] = [
     role: 'Solo Developer',
     teamSize: 1,
     challenges: [
-      'Designing an intuitive habit tracking interface with monthly calendar views',
-      'Implementing real-time data sync with Firebase Firestore',
+      'Designing a real-time sync architecture between Firestore and local state without race conditions or stale data',
+      'Building a custom calendar component with streak tracking that handles edge cases (timezones, month boundaries, missed days)',
     ],
     solutions: [
       'Built a custom calendar component with streak tracking and visual progress indicators',
@@ -274,8 +274,8 @@ export const projects: Project[] = [
     role: 'Solo Developer',
     teamSize: 1,
     challenges: [
-      'Implementing UMT-specific grading logic with real-time validation',
-      'Creating a print-optimized PDF export with glassmorphism aesthetics',
+      'Implementing UMT-specific weighted grading logic with real-time validation across semesters — one incorrect formula would break every calculation',
+      'Building a print-optimized PDF layout that preserves glassmorphism aesthetics while stripping interactive elements',
     ],
     solutions: [
       'Built a dynamic grading engine that validates inputs and calculates GPA/CGPA in real-time',
@@ -309,8 +309,8 @@ export const projects: Project[] = [
     role: 'Solo Developer',
     teamSize: 1,
     challenges: [
-      'Designing a cohesive visual motif (SignalPulse) that appears consistently across all pages',
-      'Implementing smooth page transitions with Framer Motion',
+      'Designing a reusable SVG motif system (SignalPulse) that maintains visual consistency across 6+ pages without duplicating animation logic',
+      'Architecting smooth page transitions with Framer Motion while preserving scroll position and avoiding layout shifts',
     ],
     solutions: [
       'Created reusable SVG components for the SignalPulse motif pattern',
@@ -344,8 +344,8 @@ export const projects: Project[] = [
     role: 'Solo Developer',
     teamSize: 1,
     challenges: [
-      'Reverse-engineering the MohuanLED Bluetooth protocol without documentation',
-      'Building a non-blocking asyncio architecture for real-time effect transitions',
+      'Reverse-engineering the MohuanLED Bluetooth protocol from raw packet captures — no documentation, no SDK, just binary data',
+      'Building a non-blocking asyncio event loop that schedules 183 effect transitions without missed beats or latency spikes',
     ],
     solutions: [
       'Analyzed Bluetooth packets to understand the proprietary protocol',
@@ -378,8 +378,8 @@ export const projects: Project[] = [
     role: 'Co-Developer',
     teamSize: 2,
     challenges: [
-      'Implementing game mechanics using stack data structures for tower balance',
-      'Working collaboratively with a partner under viva exam conditions',
+      'Designing stack-based game mechanics where every push/pop operation directly affects tower stability and scoring state',
+      'Coordinating with a partner under oral viva conditions — code had to be modular enough for pair debugging on the spot',
     ],
     solutions: [
       'Designed the game logic around stack push/pop operations for tower manipulation',

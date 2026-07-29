@@ -7,9 +7,9 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { cn } from '@/lib/utils'
-import { ChevronRight, ChevronDown, CheckCircle, Award, Star, Code, Database, Cloud, Globe, Terminal, Layers, Shield, Zap, GraduationCap, Briefcase } from 'lucide-react'
-import { experiences, skills, certifications, education, achievements } from '@/data'
-import type { Skill, Certification, Education, Achievement } from '@/types'
+import { ChevronRight, ChevronDown, CheckCircle, Code, Database, Cloud, Globe, Terminal, Layers, Shield, Zap, Star, GraduationCap, Briefcase } from 'lucide-react'
+import { experiences, skills, education } from '@/data'
+import type { Skill, Education } from '@/types'
 import { staggerContainer, fadeSlideUp, scaleIn, fadeIn, springSoft, easeOutSmooth, cardHover } from '@/lib/animations'
 
 const categoryIcons = {
@@ -50,15 +50,13 @@ const skillCategories = [
 export default function ExperiencePage() {
   const prefersReducedMotion = useReducedMotion()
   const motionSafe = !prefersReducedMotion
-  const [activeTab, setActiveTab] = useState<'experience' | 'skills' | 'certifications' | 'education' | 'achievements'>('experience')
+  const [activeTab, setActiveTab] = useState<'experience' | 'skills' | 'education'>('experience')
   const [expandedExp, setExpandedExp] = useState<string | null>(null)
 
   const tabs = [
     { id: 'experience', label: 'Experience', icon: Briefcase },
     { id: 'skills', label: 'Skills', icon: Code },
-    { id: 'certifications', label: 'Certifications', icon: Award },
     { id: 'education', label: 'Education', icon: GraduationCap },
-    { id: 'achievements', label: 'Achievements', icon: Star },
   ]
 
   return (
@@ -133,9 +131,7 @@ export default function ExperiencePage() {
                 >
                   {activeTab === 'experience' && <ExperienceTimeline exps={experiences} expandedExp={expandedExp} setExpandedExp={setExpandedExp} />}
                   {activeTab === 'skills' && <SkillsSection skills={skills} />}
-                  {activeTab === 'certifications' && <CertificationsSection certifications={certifications} />}
                   {activeTab === 'education' && <EducationSection education={education} />}
-                  {activeTab === 'achievements' && <AchievementsSection achievements={achievements} />}
                 </div>
               </AnimatePresence>
             </motion.div>
@@ -317,54 +313,6 @@ function SkillsSection({ skills: skls }: { skills: Skill[] }) {
   )
 }
 
-function CertificationsSection({ certifications: certs }: { certifications: Certification[] }) {
-  const prefersReducedMotion = useReducedMotion()
-  const motionSafe = !prefersReducedMotion
-  return (
-    <motion.div
-      className="grid gap-4 md:grid-cols-2"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-    >
-      {certs.map((cert) => (
-        <motion.article
-          key={cert.id}
-          variants={fadeSlideUp}
-          whileHover={motionSafe ? { y: -3 } : {}}
-        >
-          <Card className="h-full p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary shrink-0">
-                <Award className="h-6 w-6" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-heading-md font-semibold">{cert.name}</h3>
-                <p className="text-primary font-medium">{cert.issuer}</p>
-                <p className="text-body-sm text-muted-foreground mt-1">
-                  Earned {new Date(cert.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-                  {cert.expiryDate && ` · Expires ${new Date(cert.expiryDate).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`}
-                </p>
-                {cert.credentialUrl && (
-                  <a
-                    href={cert.credentialUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-body-sm text-primary hover:underline mt-2 inline-block"
-                  >
-                    Verify Credential
-                  </a>
-                )}
-              </div>
-            </div>
-          </Card>
-        </motion.article>
-      ))}
-    </motion.div>
-  )
-}
-
 function EducationSection({ education: edu }: { education: Education[] }) {
   const prefersReducedMotion = useReducedMotion()
   const motionSafe = !prefersReducedMotion
@@ -393,50 +341,6 @@ function EducationSection({ education: edu }: { education: Education[] }) {
                 <p className="text-body-sm text-muted-foreground">
                   {new Date(edu.startDate).getFullYear()} — {edu.current ? 'Present' : new Date(edu.endDate || '').getFullYear()}
                 </p>
-                {edu.honors && (
-                  <div className="mt-2 flex flex-wrap gap-1">
-                    {edu.honors.map((honor) => (
-                      <Badge key={honor} variant="secondary" className="text-body-xs">
-                        {honor}
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </Card>
-        </motion.article>
-      ))}
-    </motion.div>
-  )
-}
-
-function AchievementsSection({ achievements: ach }: { achievements: Achievement[] }) {
-  const prefersReducedMotion = useReducedMotion()
-  const motionSafe = !prefersReducedMotion
-  return (
-    <motion.div
-      className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-      variants={staggerContainer}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-    >
-      {ach.map((achievement) => (
-        <motion.article
-          key={achievement.id}
-          variants={fadeSlideUp}
-          whileHover={motionSafe ? { y: -3 } : {}}
-        >
-          <Card className="h-full p-6">
-            <div className="flex items-start gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning/10 text-warning shrink-0">
-                <Award className="h-5 w-5" />
-              </div>
-              <div>
-                <h3 className="text-heading-md font-semibold">{achievement.title}</h3>
-                <p className="text-body-md text-muted-foreground mt-1">{achievement.description}</p>
-                <p className="text-body-sm text-primary mt-2">{achievement.issuer} · {new Date(achievement.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
               </div>
             </div>
           </Card>
